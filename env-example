@@ -4,3 +4,5 @@ POSTGRES_URL = "awd"
 
 ACCESS_TOKEN_PRIVATE_PATH = "./keys/access-token.private"
 ACCESS_TOKEN_PUBLIC_PATH = "./keys/access-token.public"
+REFRESH_TOKEN_PRIVATE_PATH = "./keys/refresh-token.private"
+REFRESH_TOKEN_PUBLIC_PATH = "./keys/refresh-token.public"

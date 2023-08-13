@@ -27,5 +27,8 @@ func ValidateToken(c *fiber.Ctx) error {
 
 func SetUserRouter(app *fiber.App) {
 	app.Post("/user/login", handlers.UserLogin)
+	app.Delete("/user/logout", handlers.UserLogout)
 	app.Get("/user/profile", ValidateToken, handlers.UserProfile)
+
+	app.Get("/refresh-token", handlers.RefreshToken)
 }

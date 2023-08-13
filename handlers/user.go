@@ -25,8 +25,29 @@ func UserLogin(c *fiber.Ctx) error {
 	if err != nil {
 		return utils.CreateResponse(c, 400, nil, fiber.Map{"message": "Invalid username or password"})
 	}
-	token := utils.GenerateAccessToken(jwt.MapClaims{"username": users[0].Username})
-	return utils.CreateResponse(c, 200, fiber.Map{"message": token}, nil)
+	accessToken := utils.GenerateAccessToken(jwt.MapClaims{"username": users[0].Username})
+	refreshToken := utils.GenerateRefreshToken(jwt.MapClaims{"username": users[0].Username})
+	c.Cookie(&fiber.Cookie{
+		Name:     "session",
+		Value:    refreshToken,
+		HTTPOnly: true,
+		SameSite: "none",
+		Secure:   false,
+		MaxAge:   60 * 60 * 24,
+	})
+	return utils.CreateResponse(c, 200, fiber.Map{"message": accessToken}, nil)
+}
+
+func UserLogout(c *fiber.Ctx) error {
+	c.Cookie(&fiber.Cookie{
+		Name:     "session",
+		Value:    "",
+		HTTPOnly: true,
+		SameSite: "none",
+		Secure:   false,
+		MaxAge:   0,
+	})
+	return utils.CreateResponse(c, 200, fiber.Map{"message": "Logout successful"}, nil)
 }
 
 func UserProfile(c *fiber.Ctx) error {
